@@ -1,4 +1,4 @@
-package com.tianquanguo.tradeorder;
+package com.tianquanguo.trade.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.tianquan.tradegoods.controller;
+package com.tianquan.trade.goods.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

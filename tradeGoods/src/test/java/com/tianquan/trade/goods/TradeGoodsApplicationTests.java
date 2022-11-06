@@ -1,4 +1,4 @@
-package com.tianquan.tradegoods;
+package com.tianquan.trade.goods;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

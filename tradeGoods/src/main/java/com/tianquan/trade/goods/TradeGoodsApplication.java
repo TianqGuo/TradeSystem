@@ -1,4 +1,4 @@
-package com.tianquan.tradegoods;
+package com.tianquan.trade.goods;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
