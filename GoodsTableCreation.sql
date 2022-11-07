@@ -13,6 +13,6 @@ CREATE TABLE `goods`(
     `available_stock` int NOT NULL DEFAULT '0' COMMENT 'GoodsAvailability',
     `lock_stock` int DEFAULT '0' COMMENT 'GoodsLockedStock',
     `sale_num` int NOT NULL DEFAULT '0' COMMENT 'GoodsSaleNum',
-    `create-time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'GoodsCreatedTime',
+    `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'GoodsCreatedTime',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3 COMMENT='GoodsTable';
