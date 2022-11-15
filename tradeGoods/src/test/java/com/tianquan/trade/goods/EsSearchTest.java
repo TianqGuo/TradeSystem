@@ -1,7 +1,9 @@
 package com.tianquan.trade.goods;
 
 import com.alibaba.fastjson.JSON;
+import com.tianquan.trade.goods.db.model.Goods;
 import com.tianquan.trade.goods.model.Person;
+import com.tianquan.trade.goods.service.SearchService;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -28,6 +30,9 @@ public class EsSearchTest {
     @Autowired
     private RestHighLevelClient client;
 
+    @Autowired
+    private SearchService searchService;
+
     @Test
     public void contextLoads() {
     }
@@ -47,7 +52,7 @@ public class EsSearchTest {
     @Test
     public void addDoc() throws Exception {
         Person person = new Person();
-        person.setId("125");
+        person.setId("126");
         person.setName("张学友");
         person.setAddress("香港铜锣湾");
         person.setAge(18);
@@ -268,5 +273,148 @@ public class EsSearchTest {
         }
 
         System.out.println(JSON.toJSONString(personList));
+    }
+
+    /**
+     * term词条查询
+     */
+    @Test
+    public void queryMatch() throws IOException {
+        //构建查询请求，指定查询的索引库
+        SearchRequest searchRequest = new SearchRequest("goods");
+
+        //创建查询条件构造器 SearchSourceBuilder
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        // Note that in wildcard search '*' means at least one character
+
+        /**
+         * 查询单个,等于
+         */
+
+        //单个匹配，搜索name为li的文档
+        // QueryBuilder query = QueryBuilders.matchQuery("name", "张学*");
+
+        //搜索名字中含有li文档（name中只要包含li即可）
+        //WildcardQueryBuilder queryBuilder = QueryBuilders.wildcardQuery("name","张学*");
+        //搜索name中或nickname中包含有li的文档（必须与li一致）
+        //  QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery("张学友","name", "address");
+
+        // WildcardQueryBuilder queryBuilder = QueryBuilders.wildcardQuery("张学*","name","address");
+
+//        //创建查询条件构造器 SearchSourceBuilder
+//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+//
+//        //模糊查询
+//        WildcardQueryBuilder queryBuilder1 = QueryBuilders.wildcardQuery("name", "*张学*");//搜索name中含有 张学 的文档
+//        WildcardQueryBuilder queryBuilder2 = QueryBuilders.wildcardQuery("address", "*香*");//搜索address中含有 香 的文档
+//
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//        //name中必须含有 张学,address中必须含有 香 ,must相当于SQL中的 and
+//        boolQueryBuilder.must(queryBuilder1);
+//        boolQueryBuilder.must(queryBuilder2);
+//
+//        //指定查询条件
+//        searchSourceBuilder.query(boolQueryBuilder);
+
+
+//        //创建查询条件构造器 SearchSourceBuilder
+//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+//        //模糊查询
+//        WildcardQueryBuilder queryBuilder1 = QueryBuilders.wildcardQuery("name", "*张学*");//搜索name中含有 张学 的文档
+//        WildcardQueryBuilder queryBuilder2 = QueryBuilders.wildcardQuery("address", "*台*");//搜索address中含有 香 的文档
+//
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//        //name中必须含有 张学,address中必须含有 香 ,should 相当于SQL中的 or
+//        boolQueryBuilder.should(queryBuilder1);
+//        boolQueryBuilder.should(queryBuilder2);
+
+
+//        String keyword ="曜金黑";
+//         WildcardQueryBuilder queryBuilder_title = QueryBuilders.wildcardQuery("title", "*金黑*");
+        //description中含有 keyword 的文档
+//        QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery("8G+256G","description");
+          WildcardQueryBuilder queryBuilder_description = QueryBuilders.wildcardQuery("description", "*黑*");
+        //keywords中含有 keyword 的文档
+        WildcardQueryBuilder queryBuilder_keywords = QueryBuilders.wildcardQuery("keywords", "*金*");
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        //should 相当于SQL中的 or
+//         boolQueryBuilder.should(queryBuilder_title);
+          boolQueryBuilder.should(queryBuilder_description);
+         boolQueryBuilder.should(queryBuilder_keywords);
+
+        //指定查询条件
+        searchSourceBuilder.query(boolQueryBuilder);
+
+        /*
+         * 指定分页查询信息
+         * 从哪里开始查
+         */
+        searchSourceBuilder.from(0);
+        //每次查询的数量
+        searchSourceBuilder.size(5);
+
+        searchRequest.source(searchSourceBuilder);
+
+        //查询获取查询结果
+        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(JSON.toJSONString(searchResponse));
+
+        //获取命中对象
+        SearchHits searchHits = searchResponse.getHits();
+        long totalNum = searchHits.getTotalHits().value;
+        System.out.println("总记录数：" + totalNum);
+
+        List<Goods> goodsList = new ArrayList<>();
+        //获取命中的hits数据,搜索结果数据
+        SearchHit[] hits = searchHits.getHits();
+        for (SearchHit searchHit : hits) {
+            //获取json字符串格式的数据
+            String sourceAsString = searchHit.getSourceAsString();
+            Goods goods = JSON.parseObject(sourceAsString, Goods.class);
+            goodsList.add(goods);
+        }
+
+        System.out.println(JSON.toJSONString(goodsList));
+    }
+
+    /**
+     * 向ES中添加商品数据
+     */
+    @Test
+    public void addGoodsToES() {
+//        Goods goods = new Goods();
+//        goods.setTitle("三星 glaxy note2");
+//        goods.setBrand("三星");
+//        goods.setCategory("手机");
+//        goods.setNumber("NO123458");
+//        goods.setImage("test");
+//        goods.setDescription("三星 SAMSUNG Galaxy S22 超视觉夜拍系统超清夜景 超电影影像系统 超耐用精工设计 8GB+128GB 曜夜黑 5G手机");
+//        goods.setKeywords("三星 SAMSUNG Galaxy");
+//        goods.setSaleNum(78);
+//        goods.setAvailableStock(10000);
+//        goods.setPrice(899999);
+//        goods.setStatus(1);
+
+//        Goods goods = new Goods();
+//        goods.setTitle("xiaomi 曜金黑");
+//        goods.setBrand("xiaomi");
+//        goods.setCategory("手机");
+//        goods.setNumber("xiaomi");
+//        goods.setImage("test");
+//        goods.setDescription("曜金黑");
+//        goods.setKeywords("曜金黑");
+//        goods.setSaleNum(58);
+//        goods.setAvailableStock(10000);
+//        goods.setPrice(899999);
+//        goods.setStatus(1);
+//        goods.setId(25L);
+//        searchService.addGoodsToES(goods);
+    }
+
+    @Test
+    public void goodsSearch(){
+        List<Goods> goodsList = searchService.searchGoodsList("曜金黑", 0, 10);
+        System.out.println(JSON.toJSONString(goodsList));
     }
 }

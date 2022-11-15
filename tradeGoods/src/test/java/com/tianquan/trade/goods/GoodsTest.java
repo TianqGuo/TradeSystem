@@ -50,7 +50,7 @@ public class GoodsTest {
 
     @Test
     public void updateGoods() {
-        Goods goods = goodsDao.queryGoodsById(20);
+        Goods goods = goodsDao.queryGoodsById(22);
         goods.setTitle(goods.getTitle() + " update");
         goodsDao.updateGoods(goods);
     }
