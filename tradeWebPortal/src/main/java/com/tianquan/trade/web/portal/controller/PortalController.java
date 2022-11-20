@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.tianquan.trade.goods.db.model.Goods;
 import com.tianquan.trade.goods.service.GoodsService;
 import com.tianquan.trade.goods.service.SearchService;
+import com.tianquan.trade.order.db.model.Order;
+import com.tianquan.trade.order.service.OrderService;
 import com.tianquan.trade.web.portal.util.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class PortalController {
 
     @Autowired
     private SearchService searchService;
+
+    @Autowired
+    private OrderService orderService;
 
     /**
      * 跳转到主页面
@@ -62,10 +67,12 @@ public class PortalController {
      * @return
      */
     @RequestMapping("/buy/{userId}/{goodsId}")
-    public ModelAndView buy(@PathVariable long userId, @PathVariable long goodsId) {
-
-        log.info("buy userId={}, goodsId={}", userId, goodsId);
-        return null;
+    public String buy(Map<String, Object> resultMap, @PathVariable long userId, @PathVariable long goodsId) {
+        log.info("userId={}, goodsId={}", userId, goodsId);
+        Order order = orderService.createOrder(userId, goodsId);
+        resultMap.put("order", order);
+        resultMap.put("resultInfo", "下单成功");
+        return "buy_result";
     }
 
     /**

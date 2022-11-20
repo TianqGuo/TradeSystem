@@ -25,6 +25,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.tianquan</groupId>
+            <artifactId>tradeOrder</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- spring 配置文件-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
