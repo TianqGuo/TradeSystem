@@ -97,4 +97,31 @@ public class PortalController {
         resultMap.put("goodsList", goodsList);
         return "search";
     }
+
+    @RequestMapping("/order/query/{orderId}")
+    public String orderQuery(Map<String, Object> resultMap, @PathVariable long orderId) {
+        Order order = orderService.queryOrder(orderId);
+        log.info("orderId={} order={}", orderId, JSON.toJSON(order));
+        String orderShowPrice = CommonUtils.changeF2Y(order.getPayPrice());
+        resultMap.put("order", order);
+        resultMap.put("orderShowPrice", orderShowPrice);
+        return "order_detail";
+    }
+
+    /**
+     * 订单支付
+     *
+     * @return
+     */
+    @RequestMapping("/order/payOrder/{orderId}")
+    public String payOrder(Map<String, Object> resultMap, @PathVariable long orderId) throws Exception {
+        try {
+            orderService.payOrder(orderId);
+            return "redirect:/order/query/" + orderId;
+        } catch (Exception e) {
+            log.error("payOrder error,errorMessage:{}", e.getMessage());
+            resultMap.put("errorInfo", e.getMessage());
+            return "error";
+        }
+    }
 }
