@@ -27,5 +27,5 @@ public interface SeckillActivityDao {
      * @param status
      * @return
      */
-//    List<SeckillActivity> queryActivitysByStatus(int status);
+    List<SeckillActivity> queryActivitysByStatus(int status);
 }

@@ -183,10 +183,10 @@ public class PortalController {
      * @param resultMap
      * @return
      */
-//    @RequestMapping("/seckill/list")
-//    public String activityList(Map<String, Object> resultMap) {
-//        List<SeckillActivity> seckillActivities = seckillActivityService.queryActivitysByStatus(1);
-//        resultMap.put("seckillActivities", seckillActivities);
-//        return "seckill_activity_list";
-//    }
+    @RequestMapping("/seckill/list")
+    public String activityList(Map<String, Object> resultMap) {
+        List<SeckillActivity> seckillActivities = seckillActivityService.queryActivitysByStatus(1);
+        resultMap.put("seckillActivities", seckillActivities);
+        return "seckill_activity_list";
+    }
 }

@@ -22,6 +22,6 @@ public interface SeckillActivityService {
      */
     SeckillActivity querySeckillActivityById(long id);
 
-//    List<SeckillActivity> queryActivitysByStatus(int status);
+    List<SeckillActivity> queryActivitysByStatus(int status);
 
 }

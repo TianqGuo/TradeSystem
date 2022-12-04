@@ -27,8 +27,8 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
         return seckillActivityDao.querySeckillActivityById(id);
     }
 
-//    @Override
-//    public List<SeckillActivity> queryActivitysByStatus(int status) {
-//        return seckillActivityDao.queryActivitysByStatus(status);
-//    }
+    @Override
+    public List<SeckillActivity> queryActivitysByStatus(int status) {
+        return seckillActivityDao.queryActivitysByStatus(status);
+    }
 }

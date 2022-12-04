@@ -31,9 +31,9 @@ public class SeckillActivityDaoImpl implements SeckillActivityDao {
         return seckillActivityMapper.selectByPrimaryKey(id);
     }
 
-//    @Override
-//    public List<SeckillActivity> queryActivitysByStatus(int status) {
-//        return seckillActivityMapper.queryActivitysByStatus(status);
-//    }
+    @Override
+    public List<SeckillActivity> queryActivitysByStatus(int status) {
+        return seckillActivityMapper.queryActivitysByStatus(status);
+    }
 
 }
