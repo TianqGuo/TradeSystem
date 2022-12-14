@@ -32,11 +32,11 @@ public interface SeckillActivityService {
      */
     boolean processSeckillReqBase(long seckillActivityId);
 
-//    /**
-//     * 处理秒杀请求
-//     *
-//     * @param seckillActivityId
-//     * @return
-//     */
-//    boolean processSeckill( long seckillActivityId);
+    /**
+     * 处理秒杀请求
+     *
+     * @param seckillActivityId
+     * @return
+     */
+    boolean processSeckill( long seckillActivityId);
 }
