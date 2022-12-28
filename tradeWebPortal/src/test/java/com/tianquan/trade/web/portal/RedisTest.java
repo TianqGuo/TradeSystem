@@ -40,8 +40,8 @@ public class RedisTest {
     @Test
     public void setJmeterStockTest() {
         //stock:秒杀活动ID    库存数
-        redisWorker.setValue("stock:4", 10L);
-        System.out.println(redisWorker.getValueByKey("stock:4"));
+        redisWorker.setValue("stock:3", 10L);
+        System.out.println(redisWorker.getValueByKey("stock:3"));
     }
 
 }

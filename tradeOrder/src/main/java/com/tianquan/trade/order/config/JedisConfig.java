@@ -1,4 +1,4 @@
-package com.tianquan.trade.lightning.deal.config;
+package com.tianquan.trade.order.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-@Configuration("JedisConfig1")
+@Configuration("JedisConfig2")
 public class JedisConfig extends CachingConfigurerSupport {
     private Logger logger = LoggerFactory.getLogger(JedisConfig.class);
 

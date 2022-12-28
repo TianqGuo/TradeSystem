@@ -8,7 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableRabbit
 @ComponentScan(basePackages = {"com.tianquan"})
-@MapperScan({"com.tianquan.trade.order.db.mappers","com.tianquan.trade.goods.db.mappers",})
+@MapperScan({"com.tianquan.trade.order.db.mappers","com.tianquan.trade.goods.db.mappers","com.tianquan.trade.lightning.deal.db.mappers"})
+@SpringBootApplication
 public class TradeOrderApplication {
 
     public static void main(String[] args) {
