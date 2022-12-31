@@ -69,4 +69,11 @@ public interface SeckillActivityService {
      * @return
      */
     boolean revertStock(long id);
+
+    /**
+     * 缓存预热
+     *  将秒杀信息写入Redis中
+     * @param id
+     */
+    void  pushSeckillActivityInfoToCache(long id);
 }
