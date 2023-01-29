@@ -9,13 +9,14 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tianquan</groupId>
-    <artifactId>tradeGoods</artifactId>
+    <artifactId>tradeCommon</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tradeGoods</name>
-    <description>tradeGoods</description>
+    <name>tradeCommon</name>
+    <description>tradeCommon</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
+
 
     <dependencyManagement>
         <dependencies>
@@ -59,8 +60,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- database related -->
-
+        <!-- 数据库相关 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -82,39 +82,19 @@
             <version>1.2.75</version>
         </dependency>
 
-        <!--与ES安装版本保持一致-->
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>7.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-client</artifactId>
-            <version>7.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>7.4.0</version>
-        </dependency>
-
-        <!-- consul -->
+        <!--  rabbitMQ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
+        <!-- Redis -->
         <dependency>
-            <groupId>com.tianquan</groupId>
-            <artifactId>tradeCommon</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
         </dependency>
+
     </dependencies>
 
     <build>

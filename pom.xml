@@ -25,6 +25,7 @@
         <module>tradeWebManager</module>
         <module>tradeWebPortal</module>
         <module>tradeLightningDeal</module>
+        <module>tradeCommon</module>
     </modules>
 
     <dependencies>
