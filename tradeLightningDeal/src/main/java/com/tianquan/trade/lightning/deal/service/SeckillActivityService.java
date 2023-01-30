@@ -1,7 +1,8 @@
 package com.tianquan.trade.lightning.deal.service;
 
+import com.tianquan.trade.lightning.deal.client.model.Order;
 import com.tianquan.trade.lightning.deal.db.model.SeckillActivity;
-import com.tianquan.trade.order.db.model.Order;
+//import com.tianquan.trade.order.db.model.Order;
 
 import java.util.List;
 

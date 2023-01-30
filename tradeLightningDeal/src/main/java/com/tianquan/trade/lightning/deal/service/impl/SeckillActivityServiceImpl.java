@@ -1,15 +1,16 @@
 package com.tianquan.trade.lightning.deal.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.tianquan.trade.goods.db.model.Goods;
-import com.tianquan.trade.goods.service.GoodsService;
+import com.tianquan.trade.common.service.LimitBuyService;
+import com.tianquan.trade.common.utils.RedisWorker;
+import com.tianquan.trade.common.utils.SnowflakeIdWorker;
+import com.tianquan.trade.lightning.deal.client.GoodsFeignClient;
+import com.tianquan.trade.lightning.deal.client.model.Goods;
+import com.tianquan.trade.lightning.deal.client.model.Order;
 import com.tianquan.trade.lightning.deal.db.dao.SeckillActivityDao;
 import com.tianquan.trade.lightning.deal.db.model.SeckillActivity;
+import com.tianquan.trade.lightning.deal.mq.OrderMessageSender;
 import com.tianquan.trade.lightning.deal.service.SeckillActivityService;
-import com.tianquan.trade.lightning.deal.utils.RedisWorker;
-import com.tianquan.trade.order.db.model.Order;
-import com.tianquan.trade.order.mq.OrderMessageSender;
-import com.tianquan.trade.order.utils.SnowflakeIdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,10 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
     private LimitBuyService limitBuyService;
 
     @Autowired
-    private GoodsService goodsService;
+    private OrderMessageSender orderMessageSender;
+
+    @Autowired
+    private GoodsFeignClient goodsFeignClient;
 
     /**
      * datacenterId;  数据中心
@@ -41,8 +45,8 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
      */
     private final SnowflakeIdWorker snowFlake = new SnowflakeIdWorker(6, 8);
 
-    @Autowired
-    private OrderMessageSender orderMessageSender;
+
+
 
     @Override
     public boolean insertSeckillActivity(SeckillActivity seckillActivity) {
@@ -173,7 +177,7 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
         redisWorker.setValue("seckillActivity:" + seckillActivity.getId(), JSON.toJSONString(seckillActivity));
 
         //活动对应的商品信息
-        Goods goods = goodsService.queryGoodsById(seckillActivity.getGoodsId());
+        Goods goods = goodsFeignClient.queryGoodsById(seckillActivity.getGoodsId());
         redisWorker.setValue("seckillActivity_goods:" + seckillActivity.getGoodsId(), JSON.toJSONString(goods));
     }
 }

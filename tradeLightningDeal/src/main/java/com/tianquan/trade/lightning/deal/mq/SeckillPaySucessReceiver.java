@@ -1,7 +1,8 @@
 package com.tianquan.trade.lightning.deal.mq;
 import com.alibaba.fastjson.JSON;
+import com.tianquan.trade.lightning.deal.client.model.Order;
 import com.tianquan.trade.lightning.deal.service.SeckillActivityService;
-import com.tianquan.trade.order.db.model.Order;
+//import com.tianquan.trade.order.db.model.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
