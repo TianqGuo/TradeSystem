@@ -1,14 +1,14 @@
 package com.tianquan.trade.web.portal.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.tianquan.trade.goods.db.model.Goods;
-import com.tianquan.trade.goods.service.GoodsService;
-import com.tianquan.trade.goods.service.SearchService;
-import com.tianquan.trade.lightning.deal.db.model.SeckillActivity;
-import com.tianquan.trade.lightning.deal.service.SeckillActivityService;
-import com.tianquan.trade.lightning.deal.utils.RedisWorker;
-import com.tianquan.trade.order.db.model.Order;
-import com.tianquan.trade.order.service.OrderService;
+import com.tianquan.trade.common.model.TradeResultDTO;
+import com.tianquan.trade.common.utils.RedisWorker;
+import com.tianquan.trade.web.portal.client.GoodsFeignClient;
+import com.tianquan.trade.web.portal.client.OrderFeignClient;
+import com.tianquan.trade.web.portal.client.SeckillActivityFeignClient;
+import com.tianquan.trade.web.portal.client.model.Goods;
+import com.tianquan.trade.web.portal.client.model.Order;
+import com.tianquan.trade.web.portal.client.model.SeckillActivity;
 import com.tianquan.trade.web.portal.util.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -29,16 +28,15 @@ public class PortalController {
 
 
     @Autowired
-    private GoodsService goodsService;
+    private GoodsFeignClient goodsFeignClient;
+
 
     @Autowired
-    private SearchService searchService;
+    private OrderFeignClient orderFeignClient;
 
     @Autowired
-    private OrderService orderService;
+    private SeckillActivityFeignClient seckillActivityFeignClient;
 
-    @Autowired
-    private SeckillActivityService seckillActivityService;
 
     @Autowired
     private RedisWorker redisWorker;
@@ -61,7 +59,7 @@ public class PortalController {
      */
     @RequestMapping("/goods/{goodsId}")
     public ModelAndView itemPage(@PathVariable long goodsId) {
-        Goods goods = goodsService.queryGoodsById(goodsId);
+        Goods goods = goodsFeignClient.queryGoodsById(goodsId);
         log.info("goodsId={},goods={}", goodsId, JSON.toJSON(goods));
         String showPrice = CommonUtils.changeF2Y(goods.getPrice());
         ModelAndView modelAndView = new ModelAndView();
@@ -73,32 +71,29 @@ public class PortalController {
 
     /**
      * 购买请求处理
+     *
      * @param userId
      * @param goodsId
      * @return
      */
     @RequestMapping("/buy/{userId}/{goodsId}")
-    public String buy(Map<String, Object> resultMap, @PathVariable long userId, @PathVariable long goodsId) {
-//        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView buy(@PathVariable long userId, @PathVariable long goodsId) {
+        ModelAndView modelAndView = new ModelAndView();
         try {
             log.info("userId={}, goodsId={}", userId, goodsId);
-            Order order = orderService.createOrder(userId, goodsId);
+            Order order = orderFeignClient.createOrder(userId, goodsId);
             //下单成功
-//            modelAndView.addObject("order", order);
-//            modelAndView.addObject("resultInfo", "下单成功");
-//            modelAndView.setViewName("buy_result");
-            resultMap.put("order", order);
-            resultMap.put("resultInfo", "下单成功");
+            modelAndView.addObject("order", order);
+            modelAndView.addObject("resultInfo", "下单成功");
+            modelAndView.setViewName("buy_result");
+            return modelAndView;
         } catch (Exception e) {
             //下单失败
             log.error("buy error,errorMessage:{}", e.getMessage());
-            resultMap.put("errorInfo", "下单失败,原因: " + e.getMessage());
-//            modelAndView.addObject("errorInfo", "下单失败,原因" + e.getMessage());
-//            modelAndView.setViewName("buy_result");
-            return "error";
+            modelAndView.addObject("resultInfo", "下单失败,原因" + e.getMessage());
+            modelAndView.setViewName("buy_result");
+            return modelAndView;
         }
-
-        return "buy_result";
     }
 
     /**
@@ -119,14 +114,14 @@ public class PortalController {
     @RequestMapping("/searchAction")
     public String search(@RequestParam("searchWords") String searchWords, Map<String, Object> resultMap) {
         log.info("search searchWords:{}", searchWords);
-        List<Goods> goodsList = searchService.searchGoodsList(searchWords, 0, 10);
+        List<Goods> goodsList = goodsFeignClient.searchGoodsList(searchWords, 0, 10);
         resultMap.put("goodsList", goodsList);
         return "search";
     }
 
     @RequestMapping("/order/query/{orderId}")
     public String orderQuery(Map<String, Object> resultMap, @PathVariable long orderId) {
-        Order order = orderService.queryOrder(orderId);
+        Order order = orderFeignClient.queryOrder(orderId);
         log.info("orderId={} order={}", orderId, JSON.toJSON(order));
         String orderShowPrice = CommonUtils.changeF2Y(order.getPayPrice());
         resultMap.put("order", order);
@@ -142,7 +137,7 @@ public class PortalController {
     @RequestMapping("/order/payOrder/{orderId}")
     public String payOrder(Map<String, Object> resultMap, @PathVariable long orderId) throws Exception {
         try {
-            orderService.payOrder(orderId);
+            orderFeignClient.payOrder(orderId);
             return "redirect:/order/query/" + orderId;
         } catch (Exception e) {
             log.error("payOrder error,errorMessage:{}", e.getMessage());
@@ -150,6 +145,7 @@ public class PortalController {
             return "error";
         }
     }
+
 
     /**
      * 秒杀活动详情页
@@ -169,7 +165,7 @@ public class PortalController {
                 seckillActivity = JSON.parseObject(seckillActivityInfo, SeckillActivity.class);
                 log.info("命中秒杀活动缓存:{}", seckillActivityInfo);
             } else {
-                seckillActivity = seckillActivityService.querySeckillActivityById(seckillId);
+                seckillActivity = seckillActivityFeignClient.querySeckillActivityById(seckillId);
             }
 
             if (seckillActivity == null) {
@@ -188,7 +184,7 @@ public class PortalController {
                 goods = JSON.parseObject(goodsInfo, Goods.class);
                 log.info("命中商品缓存:{}", goodsInfo);
             } else {
-                goods = goodsService.queryGoodsById(seckillActivity.getGoodsId());
+                goods = goodsFeignClient.queryGoodsById(seckillActivity.getGoodsId());
             }
             if (goods == null) {
                 log.error("秒杀的对应的商品信息 没有查询到 seckillId:{} goodsId:{}", seckillId, seckillActivity.getGoodsId());
@@ -215,15 +211,16 @@ public class PortalController {
      */
     @RequestMapping("/seckill/list")
     public String activityList(Map<String, Object> resultMap) {
-        List<SeckillActivity> seckillActivities = seckillActivityService.queryActivitysByStatus(1);
+        List<SeckillActivity> seckillActivities = seckillActivityFeignClient.queryActivitysByStatus(1);
         resultMap.put("seckillActivities", seckillActivities);
         return "seckill_activity_list";
     }
 
+
 //    @ResponseBody
 //    @RequestMapping("/seckill/buy/{seckillId}")
 //    public String seckillInfoBase(@PathVariable long seckillId) {
-////         boolean res = seckillActivityService.processSeckillReqBase(seckillId);
+//       // boolean res = seckillActivityService.processSeckillReqBase(seckillId);
 //        boolean res = seckillActivityService.processSeckill(seckillId);
 //        if (res) {
 //            return "商品抢购成功";
@@ -236,11 +233,16 @@ public class PortalController {
     public ModelAndView seckill(@PathVariable long userId, @PathVariable long seckillId) {
         ModelAndView modelAndView = new ModelAndView();
         try {
-            Order order = seckillActivityService.processSeckill(userId, seckillId);
+            TradeResultDTO<Order> orderTradeResultDTO = seckillActivityFeignClient.processSeckill(userId, seckillId);
+            log.info("seckillActivityFeignClient.processSeckill  result:{}", orderTradeResultDTO);
+            if (orderTradeResultDTO.getCode() != 200) {
+                throw new RuntimeException(orderTradeResultDTO.getErrorMessage());
+            }
             modelAndView.addObject("resultInfo", "秒杀抢购成功");
-            modelAndView.addObject("order", order);
+            modelAndView.addObject("order", orderTradeResultDTO.getData());
             modelAndView.setViewName("buy_result");
         } catch (Exception e) {
+            log.error("seckill buy error", e);
             modelAndView.addObject("errorInfo", e.getMessage());
             modelAndView.setViewName("error");
         }
