@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.5</version>
+        <version>2.3.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tianquan</groupId>
@@ -30,6 +30,7 @@
     </dependencyManagement>
 
     <dependencies>
+
         <!-- 商品模块 -->
         <dependency>
             <groupId>com.tianquan</groupId>
@@ -38,10 +39,10 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- 秒杀模块 -->
+        <!--  订单模块 -->
         <dependency>
             <groupId>com.tianquan</groupId>
-            <artifactId>tradeLightningDeal</artifactId>
+            <artifactId>tradeOrder</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -69,23 +70,6 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!--与ES安装版本保持一致-->
-        <!--   we need ES here because webmanager need to user elasticsearch resource like xcontent     -->
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>7.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-client</artifactId>
-            <version>7.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>7.4.0</version>
-        </dependency>
 
         <!-- consul -->
         <dependency>
@@ -102,12 +86,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.tianquan</groupId>
-            <artifactId>tradeOrder</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+
     </dependencies>
 
     <build>
