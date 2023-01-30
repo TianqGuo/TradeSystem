@@ -1,10 +1,9 @@
 package com.tianquan.trade.web.manager.controller;
 
-
 import com.tianquan.trade.goods.db.model.Goods;
 import com.tianquan.trade.goods.service.GoodsService;
-import com.tianquan.trade.lightning.deal.db.model.SeckillActivity;
-import com.tianquan.trade.lightning.deal.service.SeckillActivityService;
+import com.tianquan.trade.web.manager.client.SeckillActivityFeignClient;
+import com.tianquan.trade.web.manager.client.model.SeckillActivity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,10 +22,11 @@ public class ManagerController {
     private GoodsService goodsService;
 
     @Autowired
-    private SeckillActivityService seckillActivityService;
+    private SeckillActivityFeignClient seckillActivityFeignClient;
 
     /**
      * 跳转到主页面
+     *
      * @return
      */
     @RequestMapping("/index")
@@ -37,6 +37,7 @@ public class ManagerController {
 
     /**
      * 跳转商品添加页面
+     *
      * @return
      */
     @RequestMapping("/add_goods")
@@ -46,6 +47,7 @@ public class ManagerController {
 
     /**
      * 处理商品添加
+     *
      * @param title
      * @param number
      * @param brand
@@ -88,7 +90,6 @@ public class ManagerController {
         resultMap.put("goodsInfo", goods);
         return "add_goods";
     }
-
 
     /**
      * 跳转到秒杀活动页面
@@ -141,7 +142,7 @@ public class ManagerController {
             seckillActivity.setSeckillPrice(seckillPrice);
             seckillActivity.setOldPrice(oldPrice);
             seckillActivity.setCreateTime(new Date());
-            seckillActivityService.insertSeckillActivity(seckillActivity);
+            seckillActivityFeignClient.insertSeckillActivity(seckillActivity);
             resultMap.put("seckillActivity", seckillActivity);
             return "add_skill_activity";
         } catch (Exception e) {
@@ -149,6 +150,7 @@ public class ManagerController {
             return "500";
         }
     }
+
 
     /**
      * 跳转到推送缓存预热页面
@@ -168,7 +170,8 @@ public class ManagerController {
     @RequestMapping("/pushSeckillCacheAction")
     public String pushSkilCache(@RequestParam("seckillId") long seckillId) {
         //将秒杀库存写入缓存中
-        seckillActivityService.pushSeckillActivityInfoToCache(seckillId);
+        seckillActivityFeignClient.pushSeckillActivityInfoToCache(seckillId);
         return "push_seckill_cache";
     }
+
 }
