@@ -1,7 +1,8 @@
 package com.tianquan.trade.order.mq;
 
 import com.alibaba.fastjson.JSON;
-import com.tianquan.trade.goods.service.GoodsService;
+//import com.tianquan.trade.goods.service.GoodsService;
+import com.tianquan.trade.order.client.GoodsFeignClient;
 import com.tianquan.trade.order.db.dao.OrderDao;
 import com.tianquan.trade.order.db.model.Order;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class OrderPayCheckReceiver {
     private OrderDao orderDao;
 
     @Autowired
-    private GoodsService goodsService;
+    private GoodsFeignClient goodsFeignClient;
 
     /**
      * 消息处理
@@ -45,7 +46,7 @@ public class OrderPayCheckReceiver {
             //3.更新订单状态为关闭
             orderDao.updateOrder(orderInfo);
             //4.将锁定的库存回补
-            goodsService.revertStock(orderInfo.getGoodsId());
+            goodsFeignClient.revertStock(orderInfo.getGoodsId());
         }
     }
 }

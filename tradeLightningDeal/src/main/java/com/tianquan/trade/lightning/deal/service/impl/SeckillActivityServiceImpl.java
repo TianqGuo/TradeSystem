@@ -9,7 +9,6 @@ import com.tianquan.trade.lightning.deal.service.SeckillActivityService;
 import com.tianquan.trade.lightning.deal.utils.RedisWorker;
 import com.tianquan.trade.order.db.model.Order;
 import com.tianquan.trade.order.mq.OrderMessageSender;
-import com.tianquan.trade.order.service.LimitBuyService;
 import com.tianquan.trade.order.utils.SnowflakeIdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

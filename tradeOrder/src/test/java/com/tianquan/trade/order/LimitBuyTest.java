@@ -1,6 +1,5 @@
 package com.tianquan.trade.order;
 
-import com.tianquan.trade.order.service.LimitBuyService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

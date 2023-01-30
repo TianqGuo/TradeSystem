@@ -27,4 +27,12 @@ public interface OrderService {
      * @param orderId
      */
     void payOrder(long orderId);
+
+    /**
+     * 修改对应的订单信息
+     *
+     * @param order
+     * @return
+     */
+    boolean updateOrder(Order order);
 }

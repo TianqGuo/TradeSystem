@@ -1,9 +1,9 @@
 package com.tianquan.trade.order.mq;
 
 import com.alibaba.fastjson.JSON;
+import com.tianquan.trade.common.service.LimitBuyService;
 import com.tianquan.trade.order.db.dao.OrderDao;
 import com.tianquan.trade.order.db.model.Order;
-import com.tianquan.trade.order.service.LimitBuyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;

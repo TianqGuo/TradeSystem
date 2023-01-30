@@ -16,6 +16,19 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Hoxton.SR1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
 <!--        &lt;!&ndash; 商品模块 &ndash;&gt;-->
 <!--        <dependency>-->
@@ -24,6 +37,13 @@
 <!--            <version>0.0.1-SNAPSHOT</version>-->
 <!--            <scope>compile</scope>-->
 <!--        </dependency>-->
+
+        <!-- 公共模块 -->
+        <dependency>
+            <groupId>com.tianquan</groupId>
+            <artifactId>tradeCommon</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!-- spring 配置文件-->
         <dependency>
@@ -76,13 +96,13 @@
             <version>1.2.75</version>
         </dependency>
 
-        <!-- Import tradeGoods module -->
-        <dependency>
-            <groupId>com.tianquan</groupId>
-            <artifactId>tradeGoods</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+<!--        &lt;!&ndash; Import tradeGoods module &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.tianquan</groupId>-->
+<!--            <artifactId>tradeGoods</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
 
         <!--  rabbitMQ -->
         <dependency>
@@ -95,6 +115,22 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>2.9.0</version>
+        </dependency>
+
+        <!-- consul -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+        </dependency>
+
+        <!-- openfeign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
     </dependencies>
 
