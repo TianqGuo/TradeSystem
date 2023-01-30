@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 //FeignClient注解设置服务提供者名字，在consul注册中心注册的服务名字
-@FeignClient(name = "trade-goods", contextId = "trade-web-portal")
+@FeignClient(name = "tradeGoods", contextId = "tradeWebPortal")
 public interface GoodsFeignClient {
 
 

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 //FeignClient注解设置服务提供者名字，在consul注册中心注册的服务名字
-@FeignClient(name = "trade-order", contextId = "trade-web-portal")
+@FeignClient(name = "tradeOrder", contextId = "tradeWebPortal")
 public interface OrderFeignClient {
 
     @RequestMapping("/order/createOrder")

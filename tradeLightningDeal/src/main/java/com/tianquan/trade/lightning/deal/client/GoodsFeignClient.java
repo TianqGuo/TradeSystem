@@ -9,7 +9,7 @@ import java.util.List;
 
 
 //FeignClient name注解设置服务提供者名字，在consul注册中心注册的服务名字
-@FeignClient(name = "trade-goods", contextId = "trade-lightning-deal")
+@FeignClient(name = "tradeGoods", contextId = "tradeLightningDeal")
 public interface GoodsFeignClient {
 
 
